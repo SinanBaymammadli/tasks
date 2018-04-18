@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export default class Tasks extends Component {
+export default class Settings extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Tasks</Text>
+        <Text style={styles.welcome}>Settings</Text>
       </View>
     );
   }

@@ -1,14 +1,37 @@
 import React from "react";
-import { TabNavigator } from "react-navigation";
+import { TouchableOpacity } from "react-native";
+import { TabNavigator, StackNavigator } from "react-navigation";
 import Icon from "react-native-vector-icons/dist/MaterialCommunityIcons";
+import Ionicons from "react-native-vector-icons/dist/Ionicons";
 
 import Tasks from "./screens/Tasks";
 import Settings from "./screens/Settings";
 
+const TaskStackNavigator = StackNavigator({
+  Tasks: {
+    screen: Tasks,
+    navigationOptions: ({ navigation }) => ({
+      title: "Beauty Network",
+      headerStyle: {
+        backgroundColor: "#f4f4f4"
+      },
+      headerRight: (
+        <TouchableOpacity
+          onPress={() => alert("You pressed Add button")}
+          style={{ padding: 15 }}
+          activeOpacity={0.1}
+        >
+          <Ionicons name="ios-add-outline" size={30} color="#007bff" />
+        </TouchableOpacity>
+      )
+    })
+  }
+});
+
 const RootNavigator = TabNavigator(
   {
     Tasks: {
-      screen: Tasks,
+      screen: TaskStackNavigator,
       navigationOptions: ({ navigation }) => ({
         title: "Hizmetler",
         tabBarIcon: ({ focused, tintColor }) => {
@@ -32,7 +55,7 @@ const RootNavigator = TabNavigator(
     tabBarOptions: {
       showIcon: true,
       showLabel: true,
-      activeTintColor: "#8bc250",
+      activeTintColor: "#007bff",
       labelStyle: {
         fontSize: 8,
         margin: 0,
@@ -40,11 +63,11 @@ const RootNavigator = TabNavigator(
         fontWeight: "bold"
       },
       style: {
-        backgroundColor: "#fff"
+        backgroundColor: "#f9f9f9"
       },
       inactiveTintColor: "#4e4e4e",
       indicatorStyle: {
-        backgroundColor: "#8bc250"
+        backgroundColor: "#007bff"
       }
     }
   }
