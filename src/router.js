@@ -1,23 +1,47 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
-import { TabNavigator, StackNavigator } from "react-navigation";
+import {
+  TabNavigator,
+  StackNavigator,
+  NavigationActions
+} from "react-navigation";
 import Icon from "react-native-vector-icons/dist/MaterialCommunityIcons";
 import Ionicons from "react-native-vector-icons/dist/Ionicons";
 
 import Tasks from "./screens/Tasks";
 import Settings from "./screens/Settings";
+import Login from "./screens/Login";
+import Register from "./screens/Register";
+import AddTask from "./screens/AddTask";
+
+const Guest = StackNavigator({
+  Login: {
+    screen: Login,
+    navigationOptions: {
+      title: "Login",
+      header: null
+    }
+  },
+  Register: {
+    screen: Register,
+    navigationOptions: {
+      title: "Register",
+      header: null
+    }
+  }
+});
 
 const TaskStackNavigator = StackNavigator({
   Tasks: {
     screen: Tasks,
     navigationOptions: ({ navigation }) => ({
-      title: "Beauty Network",
+      title: "Tasks",
       headerStyle: {
         backgroundColor: "#f4f4f4"
       },
       headerRight: (
         <TouchableOpacity
-          onPress={() => alert("You pressed Add button")}
+          onPress={() => navigation.navigate("AddTask")}
           style={{ padding: 15 }}
           activeOpacity={0.1}
         >
@@ -25,10 +49,19 @@ const TaskStackNavigator = StackNavigator({
         </TouchableOpacity>
       )
     })
+  },
+  AddTask: {
+    screen: AddTask,
+    navigationOptions: ({ navigation }) => ({
+      title: "Add new task",
+      headerStyle: {
+        backgroundColor: "#f4f4f4"
+      }
+    })
   }
 });
 
-const RootNavigator = TabNavigator(
+const User = TabNavigator(
   {
     Tasks: {
       screen: TaskStackNavigator,
@@ -73,4 +106,30 @@ const RootNavigator = TabNavigator(
   }
 );
 
-export default RootNavigator;
+export const createRootNavigator = (signedIn = false) =>
+  StackNavigator(
+    {
+      Guest: {
+        screen: Guest
+      },
+      User: {
+        screen: User
+      }
+    },
+    {
+      headerMode: "none",
+      initialRouteName: signedIn ? "User" : "Guest"
+    }
+  );
+
+export const ResetToGuest = NavigationActions.reset({
+  index: 0,
+  key: null,
+  actions: [NavigationActions.navigate({ routeName: "Guest" })]
+});
+
+export const ResetToUser = NavigationActions.reset({
+  index: 0,
+  key: null,
+  actions: [NavigationActions.navigate({ routeName: "User" })]
+});

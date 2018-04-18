@@ -1,11 +1,24 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
+import { auth } from "../api";
 
 export default class Settings extends Component {
+  signOut = () => {
+    auth
+      .signOut()
+      .then(function() {
+        // Sign-out successful.
+      })
+      .catch(function(error) {
+        // An error happened.
+      });
+  };
+
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>Settings</Text>
+        <Button onPress={() => this.signOut()} title="Sign Out" />
       </View>
     );
   }

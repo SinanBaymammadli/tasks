@@ -1,9 +1,21 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView
+} from "react-native";
+
+function truncate(string) {
+  if (string.length > 10) return string.substring(0, 10) + "...";
+  else return string;
+}
 
 export default class Task extends Component {
   render() {
     const {
+      about_skill,
       user_name,
       total_price,
       title_date,
@@ -28,31 +40,42 @@ export default class Task extends Component {
         bgColor = "red";
       }
     }
+
+    let skills = [];
+
+    if (about_skill) {
+      Object.values(about_skill).forEach(skill => {
+        skills.push(skill);
+      });
+    }
+
     return (
-      <View style={styles.task}>
-        <View style={styles.taskLeft}>
-          <Text style={styles.taskUserName}>{user_name}</Text>
-          <Text style={styles.taskDate}>{title_date}</Text>
-          <Text style={styles.taskStyle}>{style_name}</Text>
-        </View>
-        <View style={styles.taskRight}>
-          <Text style={styles.taskPrice}>Toplam: {total_price}</Text>
-          <View
-            style={{
-              marginTop: 25,
-              padding: 5,
-              backgroundColor: bgColor,
-              borderRadius: 5
-            }}
-          >
-            <Text style={styles.taskStatusText}>
-              {status === 1 && "Onaylanmis"}
-              {status === 0 && "Reddedildi"}
-              {status === 2 && "Beklemede"}
-            </Text>
+      <TouchableOpacity onPress={() => this.props.itemPressed(skills)}>
+        <View style={styles.task}>
+          <View style={styles.taskLeft}>
+            <Text style={styles.taskUserName}>{truncate(user_name)}</Text>
+            <Text style={styles.taskDate}>{title_date}</Text>
+            <Text style={styles.taskStyle}>{style_name}</Text>
+          </View>
+          <View style={styles.taskRight}>
+            <Text style={styles.taskPrice}>Toplam: {total_price}</Text>
+            <View
+              style={{
+                marginTop: 25,
+                padding: 5,
+                backgroundColor: bgColor,
+                borderRadius: 5
+              }}
+            >
+              <Text style={styles.taskStatusText}>
+                {status === 1 && "Onaylanmis"}
+                {status === 0 && "Reddedildi"}
+                {status === 2 && "Beklemede"}
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 }
